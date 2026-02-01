@@ -14,6 +14,8 @@ export default function PetProfilePage() {
     const params = useParams();
     const petId = parseInt(params.id as string);
 
+
+
     const [pet, setPet] = useState<Pet | null>(null);
     const [editing, setEditing] = useState(false);
     const [formData, setFormData] = useState({ name: '', species: '', breed: '', age: 0, bio: '' });
@@ -33,11 +35,51 @@ export default function PetProfilePage() {
     const [alertsTotalPages, setAlertsTotalPages] = useState(1);
     const ALERTS_PER_PAGE = 4; // Compact limit
 
+    // Video Playback State
+    const [activeVideo, setActiveVideo] = useState<Video | null>(null);
+    const [videoBlobUrl, setVideoBlobUrl] = useState<string | null>(null);
+    const [isVideoLoading, setIsVideoLoading] = useState(false);
+
     useEffect(() => {
         if (!authLoading && !user) {
             router.push('/login');
         }
     }, [user, authLoading, router]);
+
+    // Cleanup blob URL
+    useEffect(() => {
+        return () => {
+            if (videoBlobUrl) URL.revokeObjectURL(videoBlobUrl);
+        };
+    }, [videoBlobUrl]);
+
+    const handlePlayVideo = async (video: Video) => {
+        setActiveVideo(video);
+        setIsVideoLoading(true);
+        setVideoBlobUrl(null);
+        setActiveVideoId(null); // Clear previous inline player if any
+
+        try {
+            const response = await fetch(`/api/videos/${video.id}/stream`);
+            if (!response.ok) throw new Error('Failed to load video');
+
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            setVideoBlobUrl(url);
+        } catch (error) {
+            console.error("Video load error:", error);
+            alert("Failed to load video.");
+            setActiveVideo(null);
+        } finally {
+            setIsVideoLoading(false);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setActiveVideo(null);
+        setVideoBlobUrl(null);
+        setIsVideoLoading(false);
+    };
 
     useEffect(() => {
         const fetchPet = async () => {
@@ -357,27 +399,16 @@ export default function PetProfilePage() {
                             ) : (
                                 <div className="grid grid-cols-2 gap-3">
                                     {videos.slice(0, 2).map(video => (
-                                        <div key={video.id} className="relative aspect-video rounded-lg overflow-hidden border border-neutral-200 bg-black group max-h-[160px]"> {/* Added max-h constraint */}
-                                            {activeVideoId === video.id ? (
-                                                <>
-                                                    <video
-                                                        className="w-full h-full object-contain"
-                                                        controls autoPlay
-                                                        src={`http://localhost:8000/videos/${video.id}/stream`}
-                                                    />
-                                                    <button onClick={() => setActiveVideoId(null)} className="absolute top-2 right-2 bg-black/50 text-white p-1 rounded-full"><X className="h-3 w-3" /></button>
-                                                </>
-                                            ) : (
-                                                <div onClick={() => setActiveVideoId(video.id)} className="w-full h-full cursor-pointer relative bg-neutral-900">
-                                                    <div className="absolute inset-0 flex items-center justify-center z-10">
-                                                        <div className="bg-white/90 p-1.5 rounded-full shadow-lg group-hover:scale-110 transition"><Play className="h-3 w-3 text-indigo-600" /></div>
-                                                    </div>
-                                                    <div className="absolute bottom-0 inset-x-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
-                                                        <p className="text-[10px] text-white font-medium truncate">{video.description || "No description"}</p>
-                                                        <p className="text-[10px] text-neutral-300">{new Date(video.created_at).toLocaleDateString()}</p>
-                                                    </div>
+                                        <div key={video.id} className="relative aspect-video rounded-lg overflow-hidden border border-neutral-200 bg-black group max-h-[160px]">
+                                            <div onClick={() => handlePlayVideo(video)} className="w-full h-full cursor-pointer relative bg-neutral-900">
+                                                <div className="absolute inset-0 flex items-center justify-center z-10">
+                                                    <div className="bg-white/90 p-1.5 rounded-full shadow-lg group-hover:scale-110 transition"><Play className="h-3 w-3 text-indigo-600" /></div>
                                                 </div>
-                                            )}
+                                                <div className="absolute bottom-0 inset-x-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+                                                    <p className="text-[10px] text-white font-medium truncate">{video.description || "No description"}</p>
+                                                    <p className="text-[10px] text-neutral-300">{new Date(video.created_at).toLocaleDateString()}</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
@@ -433,9 +464,47 @@ export default function PetProfilePage() {
                     </div>
 
                 </div>
+
+                {/* Video Playback Modal */}
+                {activeVideo && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+                        <div className="bg-black rounded-2xl overflow-hidden w-full max-w-4xl shadow-2xl relative border border-neutral-800">
+                            <button
+                                onClick={handleCloseModal}
+                                className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-neutral-800 text-white rounded-full transition"
+                            >
+                                <X className="h-5 w-5" />
+                            </button>
+                            <div className="aspect-video bg-neutral-900 flex items-center justify-center">
+                                {isVideoLoading ? (
+                                    <div className="flex flex-col items-center gap-3 text-neutral-400">
+                                        <div className="h-8 w-8 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                                        <p className="text-sm font-medium">Fetching video from secure storage...</p>
+                                    </div>
+                                ) : videoBlobUrl ? (
+                                    <video
+                                        src={videoBlobUrl}
+                                        controls
+                                        autoPlay
+                                        className="w-full h-full object-contain"
+                                    />
+                                ) : (
+                                    <div className="text-neutral-500 text-sm">Video unavailable</div>
+                                )}
+                            </div>
+                            <div className="p-4 bg-neutral-900 border-t border-neutral-800">
+                                <h3 className="text-lg font-bold text-white mb-1">{activeVideo.description || 'Video Clip'}</h3>
+                                <p className="text-sm text-neutral-400">
+                                    Captured on {new Date(activeVideo.created_at).toLocaleString()}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </DashboardLayout>
     );
+
 }
 
 // Add this to your global CSS or just use standard Tailwind

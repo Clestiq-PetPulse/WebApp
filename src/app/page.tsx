@@ -12,7 +12,8 @@ import {
   PawPrint,
   Play,
   ShieldAlert,
-  Video
+  Video,
+  X
 } from "lucide-react";
 import {
   BarChart,
@@ -43,12 +44,51 @@ export default function Dashboard() {
   const [recentVideos, setRecentVideos] = useState<VideoType[]>([]);
   const [severityData, setSeverityData] = useState<{ name: string; value: number; color: string }[]>([]);
   const [activityData, setActivityData] = useState<{ name: string; alerts: number }[]>([]);
+  const [activeVideo, setActiveVideo] = useState<VideoType | null>(null);
+  const [videoBlobUrl, setVideoBlobUrl] = useState<string | null>(null);
+  const [isVideoLoading, setIsVideoLoading] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) {
       router.push('/login');
     }
   }, [user, authLoading, router]);
+
+  // Cleanup blob URL on unmount or when modal closes
+  useEffect(() => {
+    return () => {
+      if (videoBlobUrl) {
+        URL.revokeObjectURL(videoBlobUrl);
+      }
+    };
+  }, [videoBlobUrl]);
+
+  const handlePlayVideo = async (video: VideoType) => {
+    setActiveVideo(video);
+    setIsVideoLoading(true);
+    setVideoBlobUrl(null);
+
+    try {
+      const response = await fetch(`/api/videos/${video.id}/stream`);
+      if (!response.ok) throw new Error('Failed to load video');
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      setVideoBlobUrl(url);
+    } catch (error) {
+      console.error("Video load error:", error);
+      alert("Failed to load video. Please try again.");
+      setActiveVideo(null); // Close modal on error
+    } finally {
+      setIsVideoLoading(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setActiveVideo(null);
+    setVideoBlobUrl(null);
+    setIsVideoLoading(false);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +98,7 @@ export default function Dashboard() {
         const [pets, alertsData, videosData] = await Promise.all([
           petApi.list(),
           alertApi.listUserAlerts(1, 100), // Get enough for stats
-          videoApi.listUserVideos(1, 5)
+          videoApi.listUserVideos(1, 20) // Get more videos for the list
         ]);
 
         // 1. Basic Stats
@@ -71,7 +111,7 @@ export default function Dashboard() {
 
         setStats({ totalPets, totalAlerts, criticalAlerts, recentActivityTime });
         setRecentAlerts(alertsData.alerts.slice(0, 4)); // Show top 4
-        setRecentVideos(videosData.videos.slice(0, 4)); // Show top 4
+        setRecentVideos(videosData.videos); // Store all fetched videos
 
         // 2. Prepare Severity Chart Data
         const severityCounts = { critical: 0, high: 0, medium: 0, low: 0 };
@@ -260,8 +300,8 @@ export default function Dashboard() {
                   recentAlerts.map(alert => (
                     <div key={alert.id} className="p-4 hover:bg-neutral-50 transition flex items-start gap-4">
                       <div className={`mt-1 h-2 w-2 rounded-full flex-shrink-0 ${alert.severity_level === 'critical' ? 'bg-red-500' :
-                          alert.severity_level === 'high' ? 'bg-orange-500' :
-                            alert.severity_level === 'medium' ? 'bg-yellow-400' : 'bg-blue-500'
+                        alert.severity_level === 'high' ? 'bg-orange-500' :
+                          alert.severity_level === 'medium' ? 'bg-yellow-400' : 'bg-blue-500'
                         }`} />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-1">
@@ -282,22 +322,9 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Recent Videos / Live Feed Visual */}
+          {/* Recent Videos List (Now with Playback Modal) */}
           <div>
-            {/* Live Feed Placeholder */}
-            <div className="bg-neutral-900 rounded-2xl overflow-hidden shadow-sm relative group mb-6">
-              <div className="absolute top-4 left-4 z-10 flex gap-2">
-                <span className="px-2 py-0.5 rounded bg-red-600/90 text-white text-[10px] font-bold uppercase tracking-wider animate-pulse">Live</span>
-                <span className="px-2 py-0.5 rounded bg-black/50 text-white text-[10px] backdrop-blur font-medium">Cam 01</span>
-              </div>
-              <div className="aspect-video bg-black flex flex-col items-center justify-center text-neutral-700">
-                <Video className="h-8 w-8 mb-2 opacity-50" />
-                <span className="text-xs font-mono">SIGNAL LOST</span>
-              </div>
-            </div>
-
-            {/* Recent Videos List */}
-            <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden h-full">
               <div className="p-4 border-b border-neutral-100 flex items-center justify-between">
                 <h3 className="font-bold text-neutral-900 text-sm">New Clips</h3>
                 <Link href="/video" className="text-xs font-medium text-indigo-600 hover:text-indigo-700">All Videos</Link>
@@ -306,11 +333,15 @@ export default function Dashboard() {
                 {recentVideos.length === 0 ? (
                   <div className="p-4 text-center text-xs text-neutral-400">No videos yet.</div>
                 ) : (
-                  recentVideos.slice(0, 3).map(video => (
-                    <div key={video.id} className="p-3 flex gap-3 hover:bg-neutral-50 transition cursor-pointer">
-                      <div className="h-16 w-24 bg-neutral-100 rounded-lg flex-shrink-0 overflow-hidden relative border border-neutral-200">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <Play className="h-4 w-4 text-neutral-400" />
+                  recentVideos.slice(0, 5).map(video => (
+                    <div
+                      key={video.id}
+                      onClick={() => handlePlayVideo(video)}
+                      className="p-3 flex gap-3 hover:bg-neutral-50 transition cursor-pointer group"
+                    >
+                      <div className="h-16 w-24 bg-neutral-900 rounded-lg flex-shrink-0 overflow-hidden relative border border-neutral-200">
+                        <div className="absolute inset-0 flex items-center justify-center group-hover:scale-110 transition">
+                          <Play className="h-5 w-5 text-white opacity-80" />
                         </div>
                       </div>
                       <div className="min-w-0 flex-1 flex flex-col justify-center">
@@ -324,6 +355,43 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+
+        {/* Video Playback Modal */}
+        {activeVideo && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+            <div className="bg-black rounded-2xl overflow-hidden w-full max-w-4xl shadow-2xl relative border border-neutral-800">
+              <button
+                onClick={handleCloseModal}
+                className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-neutral-800 text-white rounded-full transition"
+              >
+                <X className="h-5 w-5" />
+              </button>
+              <div className="aspect-video bg-neutral-900 flex items-center justify-center">
+                {isVideoLoading ? (
+                  <div className="flex flex-col items-center gap-3 text-neutral-400">
+                    <div className="h-8 w-8 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                    <p className="text-sm font-medium">Fetching video from secure storage...</p>
+                  </div>
+                ) : videoBlobUrl ? (
+                  <video
+                    src={videoBlobUrl}
+                    controls
+                    autoPlay
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <div className="text-neutral-500 text-sm">Video unavailable</div>
+                )}
+              </div>
+              <div className="p-4 bg-neutral-900 border-t border-neutral-800">
+                <h3 className="text-lg font-bold text-white mb-1">{activeVideo.description || 'Video Clip'}</h3>
+                <p className="text-sm text-neutral-400">
+                  Captured on {new Date(activeVideo.created_at).toLocaleString()}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </DashboardLayout>
   );

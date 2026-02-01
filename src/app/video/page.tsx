@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/auth-context';
 import { useRouter } from 'next/navigation';
 import { videoApi, type Video, type VideoListResponse } from '@/lib/api';
-import { Calendar, ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight, Play, X } from "lucide-react";
 import DashboardLayout from '@/components/DashboardLayout';
 import Link from 'next/link';
 
@@ -17,11 +17,50 @@ export default function VideoLibraryPage() {
     const [page, setPage] = useState(1);
     const perPage = 10;
 
+    // Video Playback State
+    const [activeVideo, setActiveVideo] = useState<Video | null>(null);
+    const [videoBlobUrl, setVideoBlobUrl] = useState<string | null>(null);
+    const [isVideoLoading, setIsVideoLoading] = useState(false);
+
     useEffect(() => {
         if (!authLoading && !user) {
             router.push('/login');
         }
     }, [user, authLoading, router]);
+
+    // Cleanup blob URL
+    useEffect(() => {
+        return () => {
+            if (videoBlobUrl) URL.revokeObjectURL(videoBlobUrl);
+        };
+    }, [videoBlobUrl]);
+
+    const handlePlayVideo = async (video: Video) => {
+        setActiveVideo(video);
+        setIsVideoLoading(true);
+        setVideoBlobUrl(null);
+
+        try {
+            const response = await fetch(`/api/videos/${video.id}/stream`);
+            if (!response.ok) throw new Error('Failed to load video');
+
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            setVideoBlobUrl(url);
+        } catch (error) {
+            console.error("Video load error:", error);
+            alert("Failed to load video.");
+            setActiveVideo(null);
+        } finally {
+            setIsVideoLoading(false);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setActiveVideo(null);
+        setVideoBlobUrl(null);
+        setIsVideoLoading(false);
+    };
 
     useEffect(() => {
         const fetchVideos = async () => {
@@ -111,7 +150,7 @@ export default function VideoLibraryPage() {
 
     return (
         <DashboardLayout>
-            <div className="p-6 md:p-8 w-full">
+            <div className="p-6 md:p-8 w-full max-w-[1600px] mx-auto">
                 <div className="flex items-center justify-between mb-8">
                     <div>
                         <h1 className="text-3xl font-bold text-neutral-900">Video Library</h1>
@@ -161,39 +200,36 @@ export default function VideoLibraryPage() {
                                                         </div>
                                                     </Link>
 
-                                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                                                         {videos.map((video) => (
                                                             <div key={video.id} className="rounded-xl border border-neutral-200 bg-white overflow-hidden hover:border-indigo-300 hover:shadow-md transition group h-full flex flex-col">
-                                                                <div className="aspect-video bg-neutral-100 relative">
-                                                                    <video
-                                                                        className="w-full h-full object-contain"
-                                                                        controls
-                                                                        preload="none"
-                                                                        poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23f5f5f5'/%3E%3Ctext x='50' y='50' font-family='sans-serif' font-size='40' fill='%23d4d4d4' text-anchor='middle' dominant-baseline='middle'%3E▶%3C/text%3E%3C/svg%3E"
-                                                                    >
-                                                                        <source src={`http://localhost:3000/videos/${video.id}/stream`} type="video/mp4" />
-                                                                        Your browser does not support the video tag.
-                                                                    </video>
+                                                                <div
+                                                                    className="aspect-video bg-neutral-900 relative cursor-pointer group-hover:opacity-95 transition"
+                                                                    onClick={() => handlePlayVideo(video)}
+                                                                >
+                                                                    <div className="absolute inset-0 flex items-center justify-center z-10">
+                                                                        <div className="bg-white/90 p-2 rounded-full shadow-lg group-hover:scale-110 transition">
+                                                                            <Play className="h-4 w-4 text-indigo-600 ml-0.5" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="absolute bottom-0 inset-x-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+                                                                        <p className="text-[10px] text-white font-medium truncate">{video.description || "No description"}</p>
+                                                                    </div>
                                                                 </div>
-                                                                <div className="p-4 flex-1">
-                                                                    <div className="flex items-center justify-between mb-2">
-                                                                        <span className="text-xs font-medium text-neutral-500">
+                                                                <div className="p-3 flex-1">
+                                                                    <div className="flex items-center justify-between mb-1.5">
+                                                                        <span className="text-[10px] font-medium text-neutral-500">
                                                                             {new Date(video.created_at).toLocaleTimeString('en-US', {
                                                                                 hour: 'numeric',
                                                                                 minute: '2-digit'
                                                                             })}
                                                                         </span>
                                                                         {video.mood && (
-                                                                            <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${getMoodColor(video.mood)}`}>
+                                                                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full border font-medium ${getMoodColor(video.mood)}`}>
                                                                                 {video.mood}
                                                                             </span>
                                                                         )}
                                                                     </div>
-                                                                    {video.description ? (
-                                                                        <p className="text-sm text-neutral-600 line-clamp-2 leading-relaxed">{video.description}</p>
-                                                                    ) : (
-                                                                        <p className="text-sm text-neutral-400 italic">No description</p>
-                                                                    )}
                                                                 </div>
                                                             </div>
                                                         ))}
@@ -248,6 +284,43 @@ export default function VideoLibraryPage() {
                             </div>
                         )}
                     </>
+                )}
+
+                {/* Video Playback Modal */}
+                {activeVideo && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+                        <div className="bg-black rounded-2xl overflow-hidden w-full max-w-4xl shadow-2xl relative border border-neutral-800">
+                            <button
+                                onClick={handleCloseModal}
+                                className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-neutral-800 text-white rounded-full transition"
+                            >
+                                <X className="h-5 w-5" />
+                            </button>
+                            <div className="aspect-video bg-neutral-900 flex items-center justify-center">
+                                {isVideoLoading ? (
+                                    <div className="flex flex-col items-center gap-3 text-neutral-400">
+                                        <div className="h-8 w-8 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                                        <p className="text-sm font-medium">Fetching video from secure storage...</p>
+                                    </div>
+                                ) : videoBlobUrl ? (
+                                    <video
+                                        src={videoBlobUrl}
+                                        controls
+                                        autoPlay
+                                        className="w-full h-full object-contain"
+                                    />
+                                ) : (
+                                    <div className="text-neutral-500 text-sm">Video unavailable</div>
+                                )}
+                            </div>
+                            <div className="p-4 bg-neutral-900 border-t border-neutral-800">
+                                <h3 className="text-lg font-bold text-white mb-1">{activeVideo.description || 'Video Clip'}</h3>
+                                <p className="text-sm text-neutral-400">
+                                    Captured on {new Date(activeVideo.created_at).toLocaleString()}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 )}
             </div>
         </DashboardLayout>
