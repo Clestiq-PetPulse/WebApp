@@ -44,8 +44,8 @@ export default function RegisterPage() {
             <div className="w-full max-w-md">
                 <div className="rounded-2xl border border-neutral-800 bg-neutral-950 p-8">
                     <div className="mb-8 text-center">
-                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-600">
-                            <UserPlus className="h-6 w-6 text-white" />
+                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/20">
+                            <UserPlus className="h-6 w-6 text-primary" />
                         </div>
                         <h1 className="text-2xl font-bold text-white">Create Account</h1>
                         <p className="mt-2 text-sm text-neutral-400">Start monitoring your pet with AI</p>
@@ -68,7 +68,7 @@ export default function RegisterPage() {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 required
-                                className="w-full rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-3 text-white placeholder-neutral-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                                className="w-full rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-3 text-white placeholder-neutral-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                                 placeholder="John Doe"
                             />
                         </div>
@@ -83,7 +83,7 @@ export default function RegisterPage() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
-                                className="w-full rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-3 text-white placeholder-neutral-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                                className="w-full rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-3 text-white placeholder-neutral-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                                 placeholder="you@example.com"
                             />
                         </div>
@@ -98,7 +98,7 @@ export default function RegisterPage() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
-                                className="w-full rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-3 text-white placeholder-neutral-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                                className="w-full rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-3 text-white placeholder-neutral-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                                 placeholder="••••••••"
                             />
                         </div>
@@ -113,7 +113,7 @@ export default function RegisterPage() {
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 required
-                                className="w-full rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-3 text-white placeholder-neutral-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-1 focus:ring-indigo-500"
+                                className="w-full rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-3 text-white placeholder-neutral-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-1 focus:ring-primary"
                                 placeholder="••••••••"
                             />
                         </div>
@@ -121,7 +121,7 @@ export default function RegisterPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full rounded-lg bg-indigo-600 px-4 py-3 font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-neutral-950 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                            className="w-full rounded-lg bg-primary px-4 py-3 font-medium text-white hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-neutral-950 disabled:opacity-50 disabled:cursor-not-allowed transition"
                         >
                             {loading ? 'Creating account...' : 'Create Account'}
                         </button>
@@ -129,7 +129,7 @@ export default function RegisterPage() {
 
                     <div className="mt-6 text-center text-sm text-neutral-400">
                         Already have an account?{' '}
-                        <Link href="/login" className="font-medium text-indigo-400 hover:text-indigo-300">
+                        <Link href="/login" className="font-medium text-primary hover:text-primary/80">
                             Sign in
                         </Link>
                     </div>

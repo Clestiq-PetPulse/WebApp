@@ -179,7 +179,7 @@ export default function ProfilePage() {
                         {/* Profile Card */}
                         <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
                             <div className="flex items-center gap-4 mb-6">
-                                <div className="h-16 w-16 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl font-bold border border-indigo-200">
+                                <div className="h-16 w-16 rounded-full bg-primary/10 text-primary flex items-center justify-center text-2xl font-bold border border-primary/20">
                                     {user.name[0].toUpperCase()}
                                 </div>
                                 <div>
@@ -196,7 +196,7 @@ export default function ProfilePage() {
                                             type="text"
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                            className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-indigo-500 focus:outline-none bg-neutral-50"
+                                            className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-primary focus:outline-none bg-neutral-50"
                                         />
                                     ) : (
                                         <p className="text-neutral-900 font-medium">{user.name}</p>
@@ -209,7 +209,7 @@ export default function ProfilePage() {
                                             type="email"
                                             value={formData.email}
                                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                            className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-indigo-500 focus:outline-none bg-neutral-50"
+                                            className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-primary focus:outline-none bg-neutral-50"
                                         />
                                     ) : (
                                         <p className="text-neutral-900 font-medium">{user.email}</p>
@@ -233,7 +233,7 @@ export default function ProfilePage() {
                                         <button
                                             onClick={handleSave}
                                             disabled={updating}
-                                            className="flex-1 py-2 px-4 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 font-medium transition disabled:opacity-50"
+                                            className="flex-1 py-2 px-4 rounded-lg bg-primary text-white hover:bg-primary/90 font-medium transition disabled:opacity-50"
                                         >
                                             {updating ? 'Saving...' : 'Save Changes'}
                                         </button>
@@ -253,7 +253,7 @@ export default function ProfilePage() {
                         {/* Notification Preferences */}
                         <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
                             <h3 className="text-lg font-bold text-neutral-900 mb-4 flex items-center gap-2">
-                                <Bell className="h-5 w-5 text-indigo-600" />
+                                <Bell className="h-5 w-5 text-primary" />
                                 Notification Preferences
                             </h3>
                             <div className="space-y-4">
@@ -264,7 +264,7 @@ export default function ProfilePage() {
                                     </div>
                                     <button
                                         onClick={() => setNotifPrefs(p => ({ ...p, critical_alerts_email: !p.critical_alerts_email }))}
-                                        className={`w-11 h-6 rounded-full transition-colors relative ${notifPrefs.critical_alerts_email ? 'bg-indigo-600' : 'bg-neutral-200'}`}
+                                        className={`w-11 h-6 rounded-full transition-colors relative ${notifPrefs.critical_alerts_email ? 'bg-primary' : 'bg-neutral-200'}`}
                                     >
                                         <span className={`absolute top-1 left-1 bg-white h-4 w-4 rounded-full transition-transform ${notifPrefs.critical_alerts_email ? 'translate-x-5' : ''}`} />
                                     </button>
@@ -276,7 +276,7 @@ export default function ProfilePage() {
                                     </div>
                                     <button
                                         onClick={() => setNotifPrefs(p => ({ ...p, critical_alerts_sms: !p.critical_alerts_sms }))}
-                                        className={`w-11 h-6 rounded-full transition-colors relative ${notifPrefs.critical_alerts_sms ? 'bg-indigo-600' : 'bg-neutral-200'}`}
+                                        className={`w-11 h-6 rounded-full transition-colors relative ${notifPrefs.critical_alerts_sms ? 'bg-primary' : 'bg-neutral-200'}`}
                                     >
                                         <span className={`absolute top-1 left-1 bg-white h-4 w-4 rounded-full transition-transform ${notifPrefs.critical_alerts_sms ? 'translate-x-5' : ''}`} />
                                     </button>
@@ -288,7 +288,7 @@ export default function ProfilePage() {
                                     </div>
                                     <button
                                         onClick={() => setNotifPrefs(p => ({ ...p, daily_digest_email: !p.daily_digest_email }))}
-                                        className={`w-11 h-6 rounded-full transition-colors relative ${notifPrefs.daily_digest_email ? 'bg-indigo-600' : 'bg-neutral-200'}`}
+                                        className={`w-11 h-6 rounded-full transition-colors relative ${notifPrefs.daily_digest_email ? 'bg-primary' : 'bg-neutral-200'}`}
                                     >
                                         <span className={`absolute top-1 left-1 bg-white h-4 w-4 rounded-full transition-transform ${notifPrefs.daily_digest_email ? 'translate-x-5' : ''}`} />
                                     </button>
@@ -327,18 +327,18 @@ export default function ProfilePage() {
                                         <Users className="h-10 w-10 text-neutral-300 mx-auto mb-3" />
                                         <p className="text-neutral-500 font-medium">No emergency contacts yet</p>
                                         <p className="text-sm text-neutral-400 mt-1">Add trusted people who can help with your pets.</p>
-                                        <button onClick={handleAddContact} className="mt-4 text-indigo-600 font-medium hover:underline text-sm">Add your first contact</button>
+                                        <button onClick={handleAddContact} className="mt-4 text-primary font-medium hover:underline text-sm">Add your first contact</button>
                                     </div>
                                 ) : (
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
                                         {contacts.map((contact) => (
-                                            <div key={contact.id} className="relative group rounded-xl border border-neutral-200 bg-white p-5 hover:border-indigo-200 hover:shadow-md transition">
+                                            <div key={contact.id} className="relative group rounded-xl border border-neutral-200 bg-white p-5 hover:border-primary/50 hover:shadow-md transition">
                                                 <div className="flex justify-between items-start mb-3">
                                                     <span className={`px-2 py-1 rounded-md text-xs font-medium border ${getContactTypeColor(contact.contact_type)}`}>
                                                         {getContactTypeLabel(contact.contact_type)}
                                                     </span>
                                                     <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        <button onClick={() => handleEditContact(contact)} className="p-1.5 hover:bg-neutral-100 rounded-md text-neutral-500 hover:text-indigo-600 transition">
+                                                        <button onClick={() => handleEditContact(contact)} className="p-1.5 hover:bg-neutral-100 rounded-md text-neutral-500 hover:text-primary transition">
                                                             <Edit2 className="h-3.5 w-3.5" />
                                                         </button>
                                                         <button onClick={() => handleDeleteContact(contact.id)} className="p-1.5 hover:bg-red-50 rounded-md text-neutral-500 hover:text-red-600 transition">
@@ -392,7 +392,7 @@ export default function ProfilePage() {
                                             type="text"
                                             value={contactForm.name}
                                             onChange={e => setContactForm({ ...contactForm, name: e.target.value })}
-                                            className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-indigo-500 focus:outline-none"
+                                            className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-primary focus:outline-none"
                                         />
                                     </div>
                                     <div>
@@ -400,7 +400,7 @@ export default function ProfilePage() {
                                         <select
                                             value={contactForm.contact_type}
                                             onChange={e => setContactForm({ ...contactForm, contact_type: e.target.value })}
-                                            className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-indigo-500 focus:outline-none"
+                                            className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-primary focus:outline-none"
                                         >
                                             <option value="family">Family</option>
                                             <option value="neighbor">Neighbor</option>
@@ -418,7 +418,7 @@ export default function ProfilePage() {
                                         type="tel"
                                         value={contactForm.phone}
                                         onChange={e => setContactForm({ ...contactForm, phone: e.target.value })}
-                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-indigo-500 focus:outline-none"
+                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-primary focus:outline-none"
                                     />
                                 </div>
 
@@ -428,7 +428,7 @@ export default function ProfilePage() {
                                         type="email"
                                         value={contactForm.email}
                                         onChange={e => setContactForm({ ...contactForm, email: e.target.value })}
-                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-indigo-500 focus:outline-none"
+                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-primary focus:outline-none"
                                     />
                                 </div>
 
@@ -438,7 +438,7 @@ export default function ProfilePage() {
                                         type="text"
                                         value={contactForm.address}
                                         onChange={e => setContactForm({ ...contactForm, address: e.target.value })}
-                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-indigo-500 focus:outline-none"
+                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-primary focus:outline-none"
                                     />
                                 </div>
 
@@ -448,7 +448,7 @@ export default function ProfilePage() {
                                         rows={3}
                                         value={contactForm.notes}
                                         onChange={e => setContactForm({ ...contactForm, notes: e.target.value })}
-                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-indigo-500 focus:outline-none"
+                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-primary focus:outline-none"
                                         placeholder="Availability, key instructions, etc."
                                     />
                                 </div>
@@ -463,7 +463,7 @@ export default function ProfilePage() {
                                     </button>
                                     <button
                                         type="submit"
-                                        className="flex-1 rounded-lg bg-indigo-600 px-4 py-2 font-medium text-white hover:bg-indigo-700 transition"
+                                        className="flex-1 rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary/90 transition"
                                     >
                                         Save Contact
                                     </button>

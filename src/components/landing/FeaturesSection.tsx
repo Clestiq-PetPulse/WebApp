@@ -1,13 +1,22 @@
 "use client";
 
 import { Activity, ShieldCheck, Video } from 'lucide-react';
+import { SafeShield, Bone } from '@/components/ui/PetIcons';
 
 export default function FeaturesSection() {
     return (
         <section id="features" className="py-24 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-sm font-semibold text-indigo-600 uppercase tracking-wide mb-2">Features</h2>
+                <div className="text-center max-w-3xl mx-auto mb-16 relative">
+                    {/* Decorative Bone */}
+                    <div className="absolute -top-10 -left-10 w-16 h-8 text-neutral-100 rotate-12 hidden lg:block">
+                        <Bone />
+                    </div>
+                    <div className="absolute top-10 -right-10 w-12 h-6 text-neutral-100 -rotate-12 hidden lg:block">
+                        <Bone />
+                    </div>
+
+                    <h2 className="text-sm font-semibold text-primary uppercase tracking-wide mb-2">Features</h2>
                     <p className="text-3xl font-bold text-neutral-900 sm:text-4xl">Everything you need to stay connected.</p>
                 </div>
 
@@ -19,10 +28,10 @@ export default function FeaturesSection() {
                         color="bg-blue-500"
                     />
                     <FeatureCard
-                        icon={<ShieldCheck className="h-6 w-6 text-white" />}
+                        icon={<SafeShield className="h-6 w-6 text-white" />}
                         title="Smart Alerts"
                         description="AI-powered detection of unusual behaviors, from excessive barking to distress signals."
-                        color="bg-indigo-500"
+                        color="bg-primary"
                     />
                     <FeatureCard
                         icon={<Video className="h-6 w-6 text-white" />}

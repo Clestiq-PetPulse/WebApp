@@ -6,7 +6,7 @@ export default function RoadmapPage() {
         <div className="min-h-screen bg-neutral-50 font-sans py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
                 <div className="mb-12 text-center">
-                    <Link href="/" className="inline-flex items-center text-sm font-medium text-neutral-500 hover:text-indigo-600 transition mb-6">
+                    <Link href="/" className="inline-flex items-center text-sm font-medium text-neutral-500 hover:text-primary transition mb-6">
                         <ArrowLeft className="h-4 w-4 mr-1" /> Back to Home
                     </Link>
                     <h1 className="text-4xl font-extrabold text-neutral-900 tracking-tight mb-4">Product Roadmap</h1>
@@ -19,7 +19,7 @@ export default function RoadmapPage() {
                     {/* Now / In Progress */}
                     <RoadmapSection
                         title="In Progress"
-                        icon={<Clock className="h-6 w-6 text-indigo-500" />}
+                        icon={<Clock className="h-6 w-6 text-primary/80" />}
                         items={[
                             { title: "Advanced Behavior Tagging", desc: "Granular classification of pet activities (e.g., eating, sleeping, playing) using multi-modal AI models.", status: "in-progress" },
                             { title: "Mobile App (iOS & Android)", desc: "Native mobile applications for on-the-go monitoring and push notifications.", status: "in-progress" },
@@ -88,7 +88,7 @@ function StatusBadge({ status }: { status: string }) {
         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Shipped</span>
     }
     if (status === 'in-progress') {
-        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">Building</span>
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">Building</span>
     }
     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-neutral-100 text-neutral-800">Planned</span>
 }

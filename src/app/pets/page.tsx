@@ -85,7 +85,7 @@ export default function PetsPage() {
                     </div>
                     <button
                         onClick={() => setShowAddPet(true)}
-                        className="flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition shadow-sm"
+                        className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90 transition shadow-sm"
                     >
                         <Plus className="h-4 w-4" />
                         Add Pet
@@ -98,7 +98,7 @@ export default function PetsPage() {
                         <p className="text-neutral-900 text-lg font-medium">No pets added yet</p>
                         <button
                             onClick={() => setShowAddPet(true)}
-                            className="text-indigo-600 hover:text-indigo-700 font-medium mt-2"
+                            className="text-primary hover:text-primary/80 font-medium mt-2"
                         >
                             Add your first pet
                         </button>
@@ -109,11 +109,11 @@ export default function PetsPage() {
                             <Link
                                 key={pet.id}
                                 href={`/pets/${pet.id}`}
-                                className="block rounded-xl border border-neutral-200 bg-white p-6 hover:border-indigo-300 hover:shadow-md transition cursor-pointer group flex flex-col h-full"
+                                className="block rounded-xl border border-neutral-200 bg-white p-6 hover:border-primary/50 hover:shadow-md transition cursor-pointer group flex flex-col h-full"
                             >
                                 <div className="flex items-start justify-between mb-4">
                                     <div>
-                                        <h3 className="text-xl font-bold text-neutral-900 group-hover:text-indigo-600 transition-colors">{pet.name}</h3>
+                                        <h3 className="text-xl font-bold text-neutral-900 group-hover:text-primary transition-colors">{pet.name}</h3>
                                         <p className="text-sm font-medium text-neutral-500">{pet.species} • {pet.breed}</p>
                                         <span className="text-xs text-neutral-400 mt-1 block">{pet.age} years old</span>
                                     </div>
@@ -155,7 +155,7 @@ export default function PetsPage() {
                                         required
                                         value={newPet.name}
                                         onChange={(e) => setNewPet({ ...newPet, name: e.target.value })}
-                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-indigo-500 focus:outline-none"
+                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-primary focus:outline-none"
                                     />
                                 </div>
                                 <div>
@@ -165,7 +165,7 @@ export default function PetsPage() {
                                         required
                                         value={newPet.species}
                                         onChange={(e) => setNewPet({ ...newPet, species: e.target.value })}
-                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-indigo-500 focus:outline-none"
+                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-primary focus:outline-none"
                                         placeholder="Dog, Cat, etc."
                                     />
                                 </div>
@@ -176,7 +176,7 @@ export default function PetsPage() {
                                         required
                                         value={newPet.breed}
                                         onChange={(e) => setNewPet({ ...newPet, breed: e.target.value })}
-                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-indigo-500 focus:outline-none"
+                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-primary focus:outline-none"
                                     />
                                 </div>
                                 <div>
@@ -187,7 +187,7 @@ export default function PetsPage() {
                                         min="0"
                                         value={newPet.age}
                                         onChange={(e) => setNewPet({ ...newPet, age: parseInt(e.target.value) || 0 })}
-                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-indigo-500 focus:outline-none"
+                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-primary focus:outline-none"
                                     />
                                 </div>
                                 <div>
@@ -196,7 +196,7 @@ export default function PetsPage() {
                                         required
                                         value={newPet.bio}
                                         onChange={(e) => setNewPet({ ...newPet, bio: e.target.value })}
-                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-indigo-500 focus:outline-none"
+                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-900 focus:border-primary focus:outline-none"
                                         rows={3}
                                     />
                                 </div>
@@ -214,7 +214,7 @@ export default function PetsPage() {
                                     <button
                                         type="submit"
                                         disabled={petLoading}
-                                        className="flex-1 rounded-lg bg-indigo-600 px-4 py-2 font-medium text-white hover:bg-indigo-700 disabled:opacity-50 transition"
+                                        className="flex-1 rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary/90 disabled:opacity-50 transition"
                                     >
                                         {petLoading ? 'Adding...' : 'Add Pet'}
                                     </button>

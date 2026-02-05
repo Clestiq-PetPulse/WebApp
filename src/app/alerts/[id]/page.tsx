@@ -344,7 +344,7 @@ export default function AlertDetailPage() {
             content: alertData.user_response,
             time: alertData.user_acknowledged_at || alertData.created_at,
             icon: <User className="h-3 w-3" />,
-            color: 'text-indigo-600 border-indigo-600'
+            color: 'text-primary border-primary'
         }] : []),
         ...(alertData.resolved_at ? [{
             id: 'case-resolved',
@@ -370,7 +370,7 @@ export default function AlertDetailPage() {
 
     return (
         <DashboardLayout>
-            <div className="h-screen overflow-hidden flex flex-col px-6 md:px-8 pt-6 pb-12 w-full">
+            <div className="flex flex-col px-6 md:px-8 pt-6 pb-12 w-full min-h-screen">
                 <button
                     onClick={() => router.back()}
                     className="flex items-center gap-2 text-neutral-400 hover:text-neutral-900 mb-8 transition-all hover:translate-x-[-4px]"
@@ -402,9 +402,9 @@ export default function AlertDetailPage() {
                             </h1>
                             {alertData.pet_name && (
                                 <div className="flex items-center gap-2 mt-2">
-                                    <div className="h-2 w-2 rounded-full bg-indigo-500 animate-pulse" />
+                                    <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
                                     <p className="text-neutral-500 font-medium tracking-wide text-xs">
-                                        Monitoring: <span className="text-indigo-600 font-bold">{alertData.pet_name}</span>
+                                        Monitoring: <span className="text-primary font-bold">{alertData.pet_name}</span>
                                     </p>
                                 </div>
                             )}
@@ -415,7 +415,7 @@ export default function AlertDetailPage() {
                         {!alertData.outcome || alertData.outcome !== 'Resolved' ? (
                             <button
                                 onClick={handleResolve}
-                                className="px-8 py-3 bg-indigo-600 text-white rounded-2xl hover:bg-indigo-700 transition-all font-bold text-sm shadow-lg shadow-indigo-100 active:scale-95"
+                                className="px-8 py-3 bg-primary text-white rounded-2xl hover:bg-primary/90 transition-all font-bold text-sm shadow-lg shadow-primary/20 active:scale-95"
                             >
                                 Mark Resolved
                             </button>
@@ -429,15 +429,15 @@ export default function AlertDetailPage() {
                 </div>
 
                 {/* Content Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 flex-grow min-h-0 overflow-hidden pb-4">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-4">
                     {/* Left Column: Video & Insights */}
-                    <div className="lg:col-span-6 flex flex-col gap-6 min-h-0 overflow-hidden p-2">
+                    <div className="lg:col-span-6 flex flex-col gap-6 p-2">
                         {/* Video Evidence */}
-                        <div className="group relative p-0.5 rounded-[1.5rem] bg-gradient-to-br from-neutral-200 to-neutral-50 shadow-xl transition-all hover:shadow-indigo-500/10 flex-shrink-0 max-w-2xl mx-auto w-full">
+                        <div className="group relative p-0.5 rounded-[1.5rem] bg-gradient-to-br from-neutral-200 to-neutral-50 shadow-xl transition-all hover:shadow-primary/10 flex-shrink-0 max-w-2xl mx-auto w-full">
                             <div className="p-5 rounded-[1.45rem] bg-white border border-neutral-100 overflow-hidden">
                                 <div className="flex items-center justify-between mb-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="p-1.5 bg-indigo-50 rounded-lg text-indigo-600">
+                                        <div className="p-1.5 bg-primary/10 rounded-lg text-primary">
                                             <Video className="h-4 w-4" />
                                         </div>
                                         <h3 className="text-base font-black text-neutral-900 tracking-tight">Observation Clip</h3>
@@ -451,7 +451,7 @@ export default function AlertDetailPage() {
                                 </div>
 
                                 {alertData.video_id ? (
-                                    <div className="rounded-3xl overflow-hidden bg-black aspect-video relative shadow-inner group-hover:shadow-indigo-500/5 transition-all">
+                                    <div className="rounded-3xl overflow-hidden bg-black aspect-video relative shadow-inner group-hover:shadow-primary/5 transition-all">
                                         <video
                                             controls
                                             className="w-full h-full object-contain"
@@ -474,18 +474,18 @@ export default function AlertDetailPage() {
                         </div>
 
                         {/* System Insight & Safety Protocol (Fills remaining height) */}
-                        <div className="flex-grow flex flex-col gap-6 min-h-0">
-                            <div className="flex-grow p-6 rounded-[1.5rem] bg-white border border-neutral-100 shadow-lg relative overflow-hidden group">
+                        <div className="flex flex-col gap-6">
+                            <div className="p-6 rounded-[1.5rem] bg-white border border-neutral-100 shadow-lg relative overflow-hidden group">
                                 <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity">
                                     <Activity className="h-24 w-24" />
                                 </div>
                                 <div className="flex items-center gap-3 mb-3">
-                                    <div className="p-1.5 bg-indigo-50 rounded-lg text-indigo-600">
+                                    <div className="p-1.5 bg-primary/10 rounded-lg text-primary">
                                         <Info className="h-4 w-4" />
                                     </div>
                                     <h3 className="text-base font-black text-neutral-900 tracking-tight">System Insight</h3>
                                 </div>
-                                <div className="overflow-y-auto custom-scrollbar max-h-[200px] lg:max-h-none">
+                                <div className="">
                                     <p className="text-neutral-600 leading-relaxed font-medium">
                                         {alertData.message || 'No specific description provided by the monitoring system.'}
                                     </p>
@@ -493,7 +493,7 @@ export default function AlertDetailPage() {
                             </div>
 
                             {alertData.recommended_actions && (
-                                <div className="p-5 rounded-[1.5rem] bg-indigo-600 text-white shadow-xl relative overflow-hidden group flex-shrink-0">
+                                <div className="p-5 rounded-[1.5rem] bg-primary text-white shadow-xl relative overflow-hidden group flex-shrink-0">
                                     <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-white/10 rounded-full blur-3xl opacity-20" />
                                     <div className="flex items-center gap-3 mb-3 relative z-10">
                                         <div className="p-1.5 bg-white/20 rounded-lg text-white">
@@ -521,24 +521,24 @@ export default function AlertDetailPage() {
                     </div>
 
                     {/* Right Column: Quick Actions & Audit Log */}
-                    <div className="lg:col-span-6 flex flex-col gap-6 min-h-0 overflow-hidden p-2">
+                    <div className="lg:col-span-6 flex flex-col gap-6 p-2">
                         {/* Gemini Protocol (Quick Actions) */}
                         <div className="flex-shrink-0 space-y-4">
                             {quickActions.filter(a => a.status === 'pending').map(action => (
-                                <div key={action.id} className="relative group overflow-hidden p-0.5 rounded-[1.5rem] bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 shadow-xl shadow-indigo-200/50">
+                                <div key={action.id} className="relative group overflow-hidden p-0.5 rounded-[1.5rem] bg-gradient-to-br from-primary via-purple-500 to-pink-500 shadow-xl shadow-primary/20">
                                     <div className="p-5 rounded-[1.45rem] bg-white transition-all group-hover:bg-white/95">
                                         <div className="flex items-center gap-2 mb-3">
-                                            <div className="p-1.5 bg-indigo-50 rounded-lg">
-                                                <Bot className="h-4 w-4 text-indigo-600" />
+                                            <div className="p-1.5 bg-primary/10 rounded-lg">
+                                                <Bot className="h-4 w-4 text-primary" />
                                             </div>
                                             <h3 className="text-base font-black text-neutral-900 tracking-tight">Gemini Protocol</h3>
                                         </div>
                                         <p className="text-xs text-neutral-500 font-medium leading-relaxed mb-4">
-                                            Response for <span className="text-indigo-600 font-bold">{action.contact_name}</span> is ready.
+                                            Response for <span className="text-primary font-bold">{action.contact_name}</span> is ready.
                                         </p>
                                         <button
                                             onClick={() => handleOpenQuickAction(action)}
-                                            className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all font-bold text-xs shadow-lg shadow-indigo-200 active:scale-[0.98]"
+                                            className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-all font-bold text-xs shadow-lg shadow-primary/20 active:scale-[0.98]"
                                         >
                                             <Zap className="h-3.5 w-3.5" />
                                             Execute Suggestion
@@ -549,7 +549,7 @@ export default function AlertDetailPage() {
                         </div>
 
                         {/* Audit Log (Consolidated) - Fills remaining height with internal scroll */}
-                        <div className="flex-grow min-h-0 p-6 rounded-[1.5rem] bg-white border border-neutral-100 shadow-lg flex flex-col overflow-hidden">
+                        <div className="p-6 rounded-[1.5rem] bg-white border border-neutral-100 shadow-lg flex flex-col">
                             <div className="flex items-center gap-3 mb-5 flex-shrink-0">
                                 <div className="p-1.5 bg-neutral-50 rounded-lg text-neutral-400">
                                     <History className="h-4 w-4" />
@@ -557,7 +557,7 @@ export default function AlertDetailPage() {
                                 <h3 className="text-base font-black text-neutral-900 tracking-tight">Audit Log</h3>
                             </div>
 
-                            <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar space-y-6 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-neutral-50">
+                            <div className="space-y-6 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-neutral-50">
                                 {auditLogs.length === 0 ? (
                                     <div className="flex flex-col items-center justify-center py-10 text-center">
                                         <Clock className="h-8 w-8 text-neutral-100 mb-2" />
@@ -566,8 +566,8 @@ export default function AlertDetailPage() {
                                 ) : (
                                     auditLogs.map(log => (
                                         <div key={log.id} className="relative pl-8">
-                                            <div className={`absolute left-0 top-1 w-6 h-6 rounded-full bg-white border-2 flex items-center justify-center shadow-sm z-10 ${log.id === 'auto-int' ? 'border-red-400' : 'border-indigo-400'}`}>
-                                                <div className={`w-1.5 h-1.5 rounded-full ${log.id === 'auto-int' ? 'bg-red-400' : 'bg-indigo-400'}`} />
+                                            <div className={`absolute left-0 top-1 w-6 h-6 rounded-full bg-white border-2 flex items-center justify-center shadow-sm z-10 ${log.id === 'auto-int' ? 'border-red-400' : 'border-primary/50'}`}>
+                                                <div className={`w-1.5 h-1.5 rounded-full ${log.id === 'auto-int' ? 'bg-red-400' : 'bg-primary'}`} />
                                             </div>
                                             <div className="flex items-center justify-between mb-1.5">
                                                 <span className={`text-[10px] font-black uppercase tracking-widest ${log.color.split(' ')[0]}`}>{log.type}</span>
@@ -587,7 +587,7 @@ export default function AlertDetailPage() {
                     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-neutral-900/60 p-4 backdrop-blur-xl animate-in fade-in duration-300">
                         <div className="w-full max-w-xl rounded-[2.5rem] bg-white p-10 shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-neutral-100 relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-10 opacity-[0.03] pointer-events-none">
-                                <Zap className="h-32 w-32 text-indigo-500" />
+                                <Zap className="h-32 w-32 text-primary" />
                             </div>
 
                             <h3 className="mb-2 text-3xl font-black text-neutral-900 tracking-tight">Dispatch Message</h3>
@@ -595,10 +595,9 @@ export default function AlertDetailPage() {
 
                             {/* Contact Selection */}
                             <div className="mb-8 group">
-                                <label className="mb-2.5 block text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 group-focus-within:text-indigo-500 transition-colors">Select Recipient</label>
                                 <div className="relative">
                                     <select
-                                        className="w-full appearance-none rounded-[1.25rem] border border-neutral-200 bg-neutral-50 p-4 pr-12 text-neutral-900 font-bold focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 focus:outline-none transition-all cursor-pointer"
+                                        className="w-full appearance-none rounded-[1.25rem] border border-neutral-200 bg-neutral-50 p-4 pr-12 text-neutral-900 font-bold focus:border-primary focus:ring-4 focus:ring-primary/5 focus:outline-none transition-all cursor-pointer"
                                         value={selectedContactId || ''}
                                         onChange={(e) => setSelectedContactId(Number(e.target.value))}
                                     >
@@ -615,7 +614,7 @@ export default function AlertDetailPage() {
                                 {/* Contact Details Display */}
                                 {selectedContactId && contacts.find(c => c.id === selectedContactId) && (
                                     <div className="mt-4 flex flex-wrap gap-3">
-                                        <div className="flex items-center gap-2 px-3 py-1.5 bg-indigo-50 rounded-full border border-indigo-100 text-[10px] font-black text-indigo-600 uppercase tracking-wider">
+                                        <div className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full border border-primary/20 text-[10px] font-black text-primary uppercase tracking-wider">
                                             <Phone className="h-3 w-3" />
                                             {contacts.find(c => c.id === selectedContactId)?.phone}
                                         </div>
@@ -631,23 +630,23 @@ export default function AlertDetailPage() {
 
                             {/* Message Composer */}
                             <div className="mb-8">
-                                <div className="flex items-center justify-between mb-4">
+                                <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                                     <div className="flex bg-neutral-100 p-1.5 rounded-2xl border border-neutral-200 shadow-inner">
                                         <button
                                             onClick={() => handlePlatformChange('sms')}
-                                            className={`px-5 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${activePlatform === 'sms' ? 'bg-white text-indigo-600 shadow-md' : 'text-neutral-500 hover:text-neutral-900'}`}
+                                            className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all whitespace-nowrap ${activePlatform === 'sms' ? 'bg-white text-primary shadow-md' : 'text-neutral-500 hover:text-neutral-900'}`}
                                         >
                                             Mobile / WA
                                         </button>
                                         <button
                                             onClick={() => handlePlatformChange('email')}
-                                            className={`px-5 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${activePlatform === 'email' ? 'bg-white text-indigo-600 shadow-md' : 'text-neutral-500 hover:text-neutral-900'}`}
+                                            className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all whitespace-nowrap ${activePlatform === 'email' ? 'bg-white text-primary shadow-md' : 'text-neutral-500 hover:text-neutral-900'}`}
                                         >
                                             Secure Email
                                         </button>
                                     </div>
                                     {(parsedMessage || isManualEdit) && (
-                                        <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-widest ${parsedMessage ? 'bg-indigo-50 text-indigo-600 border-indigo-100 animate-pulse' : 'bg-neutral-50 text-neutral-500 border-neutral-200'}`}>
+                                        <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-widest whitespace-nowrap ${parsedMessage ? 'bg-primary/10 text-primary border-primary/20 animate-pulse' : 'bg-neutral-50 text-neutral-500 border-neutral-200'}`}>
                                             {parsedMessage ? <Zap className="h-3 w-3" /> : <Info className="h-3 w-3" />}
                                             {parsedMessage ? 'AI Suggestion' : 'Manual'}
                                         </div>
@@ -655,7 +654,7 @@ export default function AlertDetailPage() {
                                 </div>
                                 <div className="relative">
                                     <textarea
-                                        className="w-full rounded-[1.5rem] border border-neutral-200 bg-neutral-50 p-6 text-sm font-medium leading-relaxed text-neutral-900 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 focus:outline-none transition-all resize-none shadow-inner"
+                                        className="w-full rounded-[1.5rem] border border-neutral-200 bg-neutral-50 p-6 text-sm font-medium leading-relaxed text-neutral-900 focus:border-primary focus:ring-4 focus:ring-primary/5 focus:outline-none transition-all resize-none shadow-inner"
                                         rows={activePlatform === 'email' ? 8 : 5}
                                         value={actionMessage}
                                         onChange={(e) => {
@@ -671,7 +670,7 @@ export default function AlertDetailPage() {
                                 </div>
                             </div>
 
-                            <div className="flex items-center justify-between gap-4 mt-10 pt-8 border-t border-neutral-50">
+                            <div className="flex flex-col-reverse md:flex-row items-stretch md:items-center justify-between gap-4 mt-10 pt-8 border-t border-neutral-50">
                                 <button
                                     onClick={() => setShowQuickActionDialog(false)}
                                     className="px-6 py-4 text-xs font-black uppercase tracking-widest text-neutral-400 hover:text-neutral-900 transition-colors"
@@ -684,7 +683,7 @@ export default function AlertDetailPage() {
                                         <>
                                             <button
                                                 onClick={() => handleShare('whatsapp')}
-                                                className="flex items-center gap-2 rounded-2xl bg-[#25D366] px-6 py-4 text-xs font-black uppercase tracking-widest text-white hover:bg-[#22c35e] transition-all shadow-lg shadow-green-200 active:scale-95"
+                                                className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-[#25D366] px-4 py-4 text-xs font-black uppercase tracking-widest text-white hover:bg-[#22c35e] transition-all shadow-lg shadow-green-200 active:scale-95 whitespace-nowrap"
                                             >
                                                 <Share2 className="h-4 w-4" />
                                                 WhatsApp
@@ -692,7 +691,7 @@ export default function AlertDetailPage() {
                                             <button
                                                 onClick={() => handleShare('email')}
                                                 disabled={!contacts.find(c => c.id === selectedContactId)?.email}
-                                                className="flex items-center gap-2 rounded-2xl bg-indigo-600 px-6 py-4 text-xs font-black uppercase tracking-widest text-white hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 disabled:opacity-30 disabled:grayscale active:scale-95"
+                                                className="flex-1 flex items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-4 text-xs font-black uppercase tracking-widest text-white hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 disabled:opacity-30 disabled:grayscale active:scale-95 whitespace-nowrap"
                                             >
                                                 <Mail className="h-4 w-4" />
                                                 Transmit
