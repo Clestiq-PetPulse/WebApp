@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useAuth } from '@/context/auth-context';
-import { Activity } from 'lucide-react';
+
 
 export default function LandingNavbar() {
     const { user } = useAuth();
@@ -11,9 +11,7 @@ export default function LandingNavbar() {
         <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-neutral-100">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-                        <Activity className="h-5 w-5 text-white" />
-                    </div>
+                    <img src="/logo.png" alt="PetPulse Logo" className="h-8 w-auto" />
                     <span className="text-xl font-bold tracking-tight text-neutral-900">PetPulse</span>
                 </div>
                 <nav className="hidden md:flex items-center gap-8">
@@ -36,7 +34,7 @@ export default function LandingNavbar() {
                             </Link>
                             <Link
                                 href="/register"
-                                className="inline-flex items-center justify-center rounded-full bg-indigo-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-indigo-700 shadow-sm hover:shadow"
+                                className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2 text-sm font-medium text-white transition hover:bg-primary/90 shadow-sm hover:shadow"
                             >
                                 Get Started
                             </Link>

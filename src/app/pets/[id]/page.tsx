@@ -26,7 +26,7 @@ export default function PetProfilePage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
-    const VIDEOS_PER_PAGE = 2; // Compact limit
+    const VIDEOS_PER_PAGE = 6; // 3x2 Grid
 
     // Alerts State
     const [alerts, setAlerts] = useState<Alert[]>([]);
@@ -189,7 +189,7 @@ export default function PetProfilePage() {
             <DashboardLayout>
                 <div className="p-8">
                     <p className="text-white">Pet not found</p>
-                    <Link href="/pets" className="text-indigo-400 hover:text-indigo-300">
+                    <Link href="/pets" className="text-primary hover:text-primary/70">
                         ← Back to Pets
                     </Link>
                 </div>
@@ -199,13 +199,13 @@ export default function PetProfilePage() {
 
     return (
         <DashboardLayout>
-            <div className="h-[calc(100vh)] flex flex-col p-6 md:p-8 overflow-hidden bg-neutral-50 box-border">
+            <div className="flex flex-col p-6 md:p-8 min-h-screen bg-neutral-50 box-border">
                 {/* Header Area - Compact */}
                 <div className="flex-none flex items-center justify-between mb-4">
                     <div className="flex items-center gap-4">
                         <Link
                             href="/pets"
-                            className="flex items-center justify-center p-2 rounded-lg bg-white border border-neutral-200 text-neutral-500 hover:text-indigo-600 hover:border-indigo-200 transition"
+                            className="flex items-center justify-center p-2 rounded-lg bg-white border border-neutral-200 text-neutral-500 hover:text-primary hover:border-primary/30 transition"
                         >
                             <ArrowLeft className="h-5 w-5" />
                         </Link>
@@ -221,14 +221,14 @@ export default function PetProfilePage() {
                 </div>
 
                 {/* Main Content Grid - Fills remaining height */}
-                <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 min-h-0">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
                     {/* Quadrant 1: Pet Profile (Edit) */}
-                    <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm flex flex-col overflow-hidden h-full">
+                    <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm flex flex-col h-auto">
                         <div className="p-4 border-b border-neutral-100 flex-none bg-neutral-50/50">
                             <h2 className="font-bold text-neutral-900">Pet Details</h2>
                         </div>
-                        <div className="p-4 overflow-y-auto flex-1 custom-scrollbar">
+                        <div className="p-4">
                             <div className="space-y-4">
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
@@ -308,16 +308,16 @@ export default function PetProfilePage() {
                             {editing ? (
                                 <>
                                     <button onClick={() => setEditing(false)} className="flex-1 h-10 text-sm font-medium text-neutral-600 border border-neutral-200 rounded-lg hover:bg-neutral-100 transition">Cancel</button>
-                                    <button onClick={handleSave} disabled={updating} className="flex-1 h-10 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition">Save</button>
+                                    <button onClick={handleSave} disabled={updating} className="flex-1 h-10 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition">Save</button>
                                 </>
                             ) : (
-                                <button onClick={handleEdit} className="w-full h-10 text-sm font-medium text-indigo-600 border border-indigo-200 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition">Edit Details</button>
+                                <button onClick={handleEdit} className="w-full h-10 text-sm font-medium text-primary border border-primary/20 bg-primary/5 rounded-lg hover:bg-primary/10 transition">Edit Details</button>
                             )}
                         </div>
                     </div>
 
                     {/* Quadrant 2: Wellness Pulse (Swaped to Top Right) */}
-                    <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm flex flex-col overflow-hidden h-full">
+                    <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm flex flex-col h-auto">
                         <div className="p-4 border-b border-neutral-100 flex-none bg-neutral-50/50">
                             <h2 className="font-bold text-neutral-900 flex items-center gap-2">
                                 <Activity className="h-4 w-4 text-green-500" />
@@ -383,30 +383,37 @@ export default function PetProfilePage() {
                     </div>
 
                     {/* Quadrant 3: Recent Videos */}
-                    <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm flex flex-col overflow-hidden h-full">
+                    <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm flex flex-col h-auto">
                         <div className="p-4 border-b border-neutral-100 flex items-center justify-between flex-none bg-neutral-50/50">
                             <h2 className="font-bold text-neutral-900 flex items-center gap-2">
-                                <Play className="h-4 w-4 text-indigo-500" />
+                                <Play className="h-4 w-4 text-primary" />
                                 Recent Videos
                             </h2>
-                            <Link href="/video" className="text-xs text-indigo-600 font-medium hover:underline">View All</Link>
+                            <Link href="/video" className="text-xs text-primary font-medium hover:underline">View All</Link>
                         </div>
-                        <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
+                        <div className="p-4">
                             {videosLoading ? (
                                 <p className="text-sm text-neutral-400 text-center py-4">Loading...</p>
                             ) : videos.length === 0 ? (
                                 <p className="text-sm text-neutral-400 text-center py-4">No recent videos.</p>
                             ) : (
-                                <div className="grid grid-cols-2 gap-3">
-                                    {videos.slice(0, 2).map(video => (
-                                        <div key={video.id} className="relative aspect-video rounded-lg overflow-hidden border border-neutral-200 bg-black group max-h-[160px]">
-                                            <div onClick={() => handlePlayVideo(video)} className="w-full h-full cursor-pointer relative bg-neutral-900">
-                                                <div className="absolute inset-0 flex items-center justify-center z-10">
-                                                    <div className="bg-white/90 p-1.5 rounded-full shadow-lg group-hover:scale-110 transition"><Play className="h-3 w-3 text-indigo-600" /></div>
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                    {videos.slice(0, 6).map(video => (
+                                        <div key={video.id} className="relative aspect-video rounded-xl overflow-hidden border border-neutral-100 bg-neutral-900 group shadow-sm transition-all hover:shadow-md hover:border-primary/20">
+                                            <div onClick={() => handlePlayVideo(video)} className="w-full h-full cursor-pointer relative">
+                                                <div className="absolute inset-0 flex items-center justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+                                                    <div className="bg-white p-2 rounded-full shadow-xl scale-90 group-hover:scale-100 transition-transform">
+                                                        <Play className="h-4 w-4 text-primary fill-primary" />
+                                                    </div>
                                                 </div>
-                                                <div className="absolute bottom-0 inset-x-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
-                                                    <p className="text-[10px] text-white font-medium truncate">{video.description || "No description"}</p>
-                                                    <p className="text-[10px] text-neutral-300">{new Date(video.created_at).toLocaleDateString()}</p>
+                                                <div className="absolute top-2 right-2 z-10">
+                                                    <div className="px-2 py-0.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[8px] font-bold text-white uppercase tracking-tight">
+                                                        {new Date(video.created_at).toLocaleDateString([], { month: 'short', day: 'numeric' })}
+                                                    </div>
+                                                </div>
+                                                <div className="absolute bottom-0 inset-x-0 p-3 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+                                                    <p className="text-[10px] text-white font-bold truncate leading-tight">{video.description || "Capture Sequence"}</p>
+                                                    <p className="text-[8px] text-neutral-300 font-medium uppercase tracking-widest mt-0.5">PetPulse Cam {video.id.toString().slice(-1)}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -417,7 +424,7 @@ export default function PetProfilePage() {
                     </div>
 
                     {/* Quadrant 4: Recent Activities (Swapped to Bottom Right) */}
-                    <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm flex flex-col overflow-hidden h-full">
+                    <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm flex flex-col h-auto">
                         <div className="p-4 border-b border-neutral-100 flex items-center justify-between flex-none bg-neutral-50/50">
                             <h2 className="font-bold text-neutral-900 flex items-center gap-2">
                                 <AlertTriangle className="h-4 w-4 text-orange-500" />
@@ -435,7 +442,7 @@ export default function PetProfilePage() {
                                 >→</button>
                             </div>
                         </div>
-                        <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
+                        <div className="p-4">
                             {alertsLoading ? (
                                 <p className="text-sm text-neutral-400 text-center py-4">Loading...</p>
                             ) : alerts.length === 0 ? (
@@ -446,12 +453,12 @@ export default function PetProfilePage() {
                                         <div
                                             key={alert.id}
                                             onClick={() => router.push(`/alerts/${alert.id}`)}
-                                            className="p-3 rounded-lg border border-neutral-100 bg-neutral-50 hover:border-indigo-200 cursor-pointer flex gap-3 group transition"
+                                            className="p-3 rounded-lg border border-neutral-100 bg-neutral-50 hover:border-primary/30 cursor-pointer flex gap-3 group transition"
                                         >
                                             <div className={`mt-0.5 w-2 h-2 rounded-full flex-shrink-0 ${alert.severity_level === 'critical' ? 'bg-red-500' : alert.severity_level === 'high' ? 'bg-orange-500' : 'bg-blue-500'}`} />
                                             <div className="min-w-0 flex-1">
                                                 <div className="flex justify-between items-center mb-1">
-                                                    <span className="text-sm font-semibold text-neutral-900 group-hover:text-indigo-600 transition">{alert.alert_type}</span>
+                                                    <span className="text-sm font-semibold text-neutral-900 group-hover:text-primary transition">{alert.alert_type}</span>
                                                     <span className="text-[10px] text-neutral-400">{new Date(alert.created_at).toLocaleDateString()}</span>
                                                 </div>
                                                 <p className="text-xs text-neutral-600 truncate">{alert.message}</p>

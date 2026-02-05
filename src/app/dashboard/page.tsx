@@ -183,7 +183,7 @@ export default function Dashboard() {
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard
-            icon={<PawPrint className="text-indigo-600 h-6 w-6" />}
+            icon={<PawPrint className="text-primary h-6 w-6" />}
             label="Total Pets"
             value={stats.totalPets.toString()}
             sub="Registered"
@@ -213,7 +213,7 @@ export default function Dashboard() {
           {/* Main Chart: Activity */}
           <div className="lg:col-span-2 bg-white rounded-2xl border border-neutral-200 p-6 shadow-sm flex flex-col">
             <h3 className="text-lg font-bold text-neutral-900 mb-6 flex items-center gap-2">
-              <Activity className="h-5 w-5 text-indigo-500" />
+              <Activity className="h-5 w-5 text-primary" />
               Activity Trends (7 Days)
             </h3>
             {/* Only render chart if there is data, else placeholder */}
@@ -237,7 +237,7 @@ export default function Dashboard() {
                     cursor={{ fill: '#eff6ff' }}
                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                   />
-                  <Bar dataKey="alerts" fill="#6366f1" radius={[4, 4, 0, 0]} barSize={40} />
+                  <Bar dataKey="alerts" fill="#351f5b" radius={[4, 4, 0, 0]} barSize={40} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -291,7 +291,7 @@ export default function Dashboard() {
             <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
               <div className="p-6 border-b border-neutral-100 flex items-center justify-between">
                 <h3 className="font-bold text-neutral-900">Recent Alerts</h3>
-                <Link href="/alerts" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">View All</Link>
+                <Link href="/alerts" className="text-sm font-medium text-primary hover:text-primary/80">View All</Link>
               </div>
               <div className="divide-y divide-neutral-100">
                 {recentAlerts.length === 0 ? (
@@ -327,7 +327,7 @@ export default function Dashboard() {
             <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden h-full">
               <div className="p-4 border-b border-neutral-100 flex items-center justify-between">
                 <h3 className="font-bold text-neutral-900 text-sm">New Clips</h3>
-                <Link href="/video" className="text-xs font-medium text-indigo-600 hover:text-indigo-700">All Videos</Link>
+                <Link href="/video" className="text-xs font-medium text-primary hover:text-primary/80">All Videos</Link>
               </div>
               <div className="divide-y divide-neutral-100">
                 {recentVideos.length === 0 ? (

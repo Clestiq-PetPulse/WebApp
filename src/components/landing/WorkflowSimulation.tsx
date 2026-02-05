@@ -15,7 +15,7 @@ export default function WorkflowSimulation() {
     }, []);
 
     const steps = [
-        { id: 0, label: "Capture", icon: Camera, color: "text-indigo-600", bg: "bg-indigo-50", border: "border-indigo-100" },
+        { id: 0, label: "Capture", icon: Camera, color: "text-primary", bg: "bg-primary/10", border: "border-primary/20" },
         { id: 1, label: "Analyze", icon: BrainCircuit, color: "text-violet-600", bg: "bg-violet-50", border: "border-violet-100" },
         { id: 2, label: "Process", icon: CloudLightning, color: "text-blue-600", bg: "bg-blue-50", border: "border-blue-100" },
         { id: 3, label: "Alert", icon: Smartphone, color: "text-green-600", bg: "bg-green-50", border: "border-green-100" },
@@ -37,7 +37,7 @@ export default function WorkflowSimulation() {
 
                 {/* Animated Data Packet */}
                 <div
-                    className="absolute top-1/2 -z-0 transform -translate-y-1/2 h-3 w-3 bg-indigo-600 rounded-full shadow-[0_0_12px_rgba(79,70,229,0.8)] transition-all duration-[2500ms] ease-linear"
+                    className="absolute top-1/2 -z-0 transform -translate-y-1/2 h-3 w-3 bg-primary rounded-full shadow-[0_0_12px_rgba(53,31,91,0.8)] transition-all duration-[2500ms] ease-linear"
                     style={{
                         left: `${15 + (activeStep * 24)}%`, // Approximate positions based on flex distribution
                         opacity: activeStep === 3 ? 0 : 1 // Hide when mostly done to reset

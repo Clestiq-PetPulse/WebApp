@@ -4,7 +4,7 @@ import { useAuth } from '@/context/auth-context';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import {
-    Activity,
+
     LayoutDashboard,
     LogOut,
     PawPrint,
@@ -12,6 +12,8 @@ import {
     Video,
     ShieldAlert
 } from "lucide-react";
+import BottomNav from './BottomNav';
+import TopBar from './TopBar';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const { user, loading, logout } = useAuth();
@@ -33,13 +35,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     return (
         <div className="flex min-h-screen bg-neutral-50 text-neutral-900 font-sans">
-            {/* Sidebar */}
-            <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-neutral-200 bg-white px-4 py-8">
+            {/* Mobile Top Bar */}
+            <TopBar />
+
+            {/* Sidebar (Desktop) */}
+            <aside className="hidden md:fixed md:left-0 md:top-0 md:z-40 md:flex md:h-screen md:w-64 md:flex-col border-r border-neutral-200 bg-white px-4 py-8">
                 <div className="flex items-center gap-2 px-2 pb-8">
-                    <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-                        <Activity className="h-5 w-5 text-white" />
-                    </div>
-                    <span className="text-xl font-bold tracking-tight text-neutral-900">PetPulse</span>
+                    <img src="/logo.png" alt="PetPulse Logo" className="h-8 w-auto" />
+                    <span className="text-xl font-bold tracking-tight text-neutral-900">
+                        PetPulse
+                    </span>
                 </div>
 
                 <nav className="space-y-1">
@@ -50,7 +55,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     <NavItem href="/profile" icon={<User />} label="Profile" active={pathname === '/profile'} />
                 </nav>
 
-                <div className="absolute bottom-8 left-4 right-4">
+                <div className="mt-auto">
                     <div className="rounded-xl bg-neutral-50 p-4 border border-neutral-200 shadow-sm">
                         <div className="flex items-center gap-3 mb-3">
                             <div className="h-10 w-10 rounded-full bg-neutral-200 flex items-center justify-center">
@@ -72,8 +77,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </div>
             </aside>
 
+            {/* Mobile Bottom Nav */}
+            <BottomNav />
+
             {/* Main Content */}
-            <main className="ml-64 w-full">
+            <main className="w-full pt-16 pb-20 md:ml-64 md:pt-0 md:pb-0">
                 {children}
             </main>
         </div>
@@ -84,7 +92,7 @@ function NavItem({ href, icon, label, active = false }: { href: string, icon: Re
     return (
         <Link
             href={href}
-            className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${active ? "bg-indigo-50 text-indigo-700" : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900"
+            className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${active ? "bg-primary/10 text-primary" : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900"
                 }`}
         >
             {icon}

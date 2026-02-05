@@ -175,7 +175,7 @@ export default function VideoLibraryPage() {
                             {Object.entries(groupedVideos).map(([dateKey, petGroups]) => (
                                 <div key={dateKey}>
                                     <div className="flex items-center gap-2 mb-6 border-b border-neutral-200 pb-2">
-                                        <Calendar className="h-5 w-5 text-indigo-600" />
+                                        <Calendar className="h-5 w-5 text-primary" />
                                         <h2 className="text-xl font-bold text-neutral-900">{dateKey}</h2>
                                     </div>
 
@@ -187,13 +187,13 @@ export default function VideoLibraryPage() {
                                                         href={`/pets/${petId}`}
                                                         className="flex items-center gap-3 mb-6 hover:opacity-80 transition group w-fit"
                                                     >
-                                                        <div className="h-10 w-10 rounded-full bg-indigo-50 flex items-center justify-center border border-indigo-100 group-hover:bg-indigo-100 transition">
-                                                            <span className="text-indigo-600 font-bold text-sm">
+                                                        <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 group-hover:bg-primary/20 transition">
+                                                            <span className="text-primary font-bold text-sm">
                                                                 #{petId}
                                                             </span>
                                                         </div>
                                                         <div>
-                                                            <h3 className="font-bold text-neutral-900 group-hover:text-indigo-600 transition">Pet #{petId}</h3>
+                                                            <h3 className="font-bold text-neutral-900 group-hover:text-primary transition">Pet #{petId}</h3>
                                                             <p className="text-sm text-neutral-500">
                                                                 {videos.length} {videos.length === 1 ? 'video' : 'videos'}
                                                             </p>
@@ -202,14 +202,14 @@ export default function VideoLibraryPage() {
 
                                                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                                                         {videos.map((video) => (
-                                                            <div key={video.id} className="rounded-xl border border-neutral-200 bg-white overflow-hidden hover:border-indigo-300 hover:shadow-md transition group h-full flex flex-col">
+                                                            <div key={video.id} className="rounded-xl border border-neutral-200 bg-white overflow-hidden hover:border-primary/50 hover:shadow-md transition group h-full flex flex-col">
                                                                 <div
                                                                     className="aspect-video bg-neutral-900 relative cursor-pointer group-hover:opacity-95 transition"
                                                                     onClick={() => handlePlayVideo(video)}
                                                                 >
                                                                     <div className="absolute inset-0 flex items-center justify-center z-10">
                                                                         <div className="bg-white/90 p-2 rounded-full shadow-lg group-hover:scale-110 transition">
-                                                                            <Play className="h-4 w-4 text-indigo-600 ml-0.5" />
+                                                                            <Play className="h-4 w-4 text-primary ml-0.5" />
                                                                         </div>
                                                                     </div>
                                                                     <div className="absolute bottom-0 inset-x-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
@@ -262,7 +262,7 @@ export default function VideoLibraryPage() {
                                                 key={pageNum}
                                                 onClick={() => setPage(pageNum)}
                                                 className={`rounded-lg px-4 py-2 text-sm font-medium transition shadow-sm ${page === pageNum
-                                                    ? 'bg-indigo-600 text-white border border-indigo-600'
+                                                    ? 'bg-primary text-white border border-primary'
                                                     : 'border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-50'
                                                     }`}
                                             >

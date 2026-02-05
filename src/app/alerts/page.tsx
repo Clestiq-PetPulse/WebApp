@@ -92,7 +92,7 @@ export default function AlertsPage() {
                             setSeverityFilter(e.target.value);
                             setCurrentPage(1);
                         }}
-                        className="rounded-lg border border-neutral-200 bg-white px-4 py-2 text-neutral-900 focus:border-indigo-500 focus:outline-none shadow-sm"
+                        className="rounded-lg border border-neutral-200 bg-white px-4 py-2 text-neutral-900 focus:border-primary focus:outline-none shadow-sm"
                     >
                         <option value="">All Severities</option>
                         <option value="critical">Critical</option>
@@ -116,7 +116,7 @@ export default function AlertsPage() {
                         {Object.entries(groupedAlerts).map(([petName, petAlerts]) => (
                             <div key={petName}>
                                 <h2 className="text-xl font-semibold text-neutral-900 mb-4 flex items-center gap-2">
-                                    <span className="h-2 w-2 rounded-full bg-indigo-500"></span>
+                                    <span className="h-2 w-2 rounded-full bg-primary"></span>
                                     {petName}
                                     <span className="text-sm text-neutral-500 font-normal">({petAlerts.length})</span>
                                 </h2>
@@ -126,7 +126,7 @@ export default function AlertsPage() {
                                         <div
                                             key={alert.id}
                                             onClick={() => router.push(`/alerts/${alert.id}`)}
-                                            className="group relative flex items-center gap-4 rounded-xl border border-neutral-200 bg-white p-4 transition hover:border-indigo-200 hover:shadow-md cursor-pointer"
+                                            className="group relative flex items-center gap-4 rounded-xl border border-neutral-200 bg-white p-4 transition hover:border-primary/30 hover:shadow-md cursor-pointer"
                                         >
                                             {/* Icon Badge */}
                                             <div className={`flex h-12 w-12 flex-none items-center justify-center rounded-full border ${getSeverityColor(alert.severity_level)} bg-opacity-10`}>
@@ -158,7 +158,7 @@ export default function AlertsPage() {
                                                 )}
                                             </div>
 
-                                            <ChevronRight className="h-5 w-5 text-neutral-300 group-hover:text-indigo-400" />
+                                            <ChevronRight className="h-5 w-5 text-neutral-300 group-hover:text-primary/60" />
                                         </div>
                                     ))}
                                 </div>
