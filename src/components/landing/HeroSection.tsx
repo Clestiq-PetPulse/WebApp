@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useAuth } from '@/context/auth-context';
 import { ArrowRight, Video } from 'lucide-react';
-import { HappyDog, PawPrint } from '@/components/ui/PetIcons';
+import { PawPrint } from '@/components/ui/PetIcons';
 
 export default function HeroSection() {
     const { user } = useAuth();
@@ -22,10 +22,7 @@ export default function HeroSection() {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
 
-                {/* Animated Happy Dog Icon */}
-                <div className="absolute -top-20 right-[15%] lg:right-[25%] hidden md:block animate-bounce duration-[3000ms]">
-                    <HappyDog className="w-24 h-24 lg:w-32 lg:h-32 drop-shadow-xl transform rotate-6 hover:rotate-12 transition-transform duration-300" />
-                </div>
+
 
                 <h1 className="mx-auto max-w-4xl text-5xl font-extrabold tracking-tight text-neutral-900 sm:text-7xl mb-6 relative">
                     Intelligent monitoring for your <span className="text-primary relative inline-block">
