@@ -1,7 +1,8 @@
 "use client";
 
 import WorkflowSimulation from './WorkflowSimulation';
-import { PetHouse, CatFace, HeartPulse, FoodBowl } from '@/components/ui/PetIcons';
+import { PetHouse, CatFace, FoodBowl } from '@/components/ui/PetIcons';
+import { Activity } from 'lucide-react';
 
 export default function WorkflowSection() {
     return (
@@ -12,9 +13,9 @@ export default function WorkflowSection() {
                     <p className="text-3xl font-bold text-neutral-900 sm:text-4xl">Simple, seamless, and secure.</p>
                 </div>
 
-                <div className="grid lg:grid-cols-2 gap-12 items-center">
-                    {/* Left Side: Steps Text */}
-                    <div className="space-y-8">
+                <div className="grid lg:grid-cols-5 gap-12 items-start">
+                    {/* Left Side: Steps Text (2/5 width) */}
+                    <div className="lg:col-span-2 space-y-8">
                         <div className="relative pl-8 border-l-2 border-primary/20 group">
                             <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-primary ring-4 ring-primary/10" />
                             <h3 className="text-xl font-bold text-neutral-900 flex items-center gap-2">
@@ -35,7 +36,7 @@ export default function WorkflowSection() {
                             <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-orange-500 ring-4 ring-orange-50" />
                             <h3 className="text-xl font-bold text-neutral-900 flex items-center gap-2">
                                 3. Instant Alerts
-                                <HeartPulse className="w-8 h-8 text-orange-200 group-hover:text-orange-400 transition-colors" />
+                                <Activity className="w-8 h-8 text-orange-200 group-hover:text-orange-400 transition-colors" />
                             </h3>
                             <p className="mt-2 text-neutral-600">Receive immediate notifications for events that matter, like distress or unusual activity.</p>
                         </div>
@@ -49,8 +50,8 @@ export default function WorkflowSection() {
                         </div>
                     </div>
 
-                    {/* Right Side: Simulation */}
-                    <div className="w-full">
+                    {/* Right Side: Simulation (3/5 width) */}
+                    <div className="lg:col-span-3 w-full">
                         <WorkflowSimulation />
                     </div>
                 </div>

@@ -17,12 +17,11 @@ export const HappyDog = ({ className }: { className?: string }) => (
 
 export const PawPrint = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 100 100" className={className} fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="20" cy="40" r="12" />
-        <circle cx="50" cy="25" r="12" />
-        <circle cx="80" cy="40" r="12" />
-        <circle cx="15" cy="70" r="10" />
-        <circle cx="85" cy="70" r="10" />
-        <path d="M50 85C65 85 75 75 75 60C75 50 65 45 50 45C35 45 25 50 25 60C25 75 35 85 50 85Z" />
+        <circle cx="20" cy="35" r="11" />
+        <circle cx="40" cy="20" r="11" />
+        <circle cx="60" cy="20" r="11" />
+        <circle cx="80" cy="35" r="11" />
+        <path d="M50 85C70 85 80 75 80 60C80 50 70 45 50 45C30 45 20 50 20 60C20 75 30 85 50 85Z" />
     </svg>
 );
 
