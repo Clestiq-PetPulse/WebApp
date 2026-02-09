@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'https://preview.petpulse.clestiq.com/:path*',
+        destination: 'https://api.petpulse.clestiq.com/:path*',
       },
     ];
   },

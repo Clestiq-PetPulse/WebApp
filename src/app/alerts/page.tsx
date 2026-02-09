@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { alertApi, type Alert } from '@/lib/api';
 import { AlertTriangle, ChevronRight, ChevronLeft } from "lucide-react";
 import DashboardLayout from '@/components/DashboardLayout';
+import { runEscalationSimulation, type SimulationProgress } from '@/lib/simulation';
+import { PlayCircle, Loader2 } from "lucide-react";
 
 export default function AlertsPage() {
     const { user, loading: authLoading } = useAuth();
@@ -17,6 +19,30 @@ export default function AlertsPage() {
     const [totalPages, setTotalPages] = useState(1);
     const [severityFilter, setSeverityFilter] = useState<string>('');
     const ALERTS_PER_PAGE = 10;
+
+    const [simulating, setSimulating] = useState(false);
+    const [simProgress, setSimProgress] = useState<SimulationProgress | null>(null);
+
+    const handleSimulation = async () => {
+        if (simulating || !user) return;
+        setSimulating(true);
+        try {
+            await runEscalationSimulation(user, (progress) => {
+                setSimProgress(progress);
+                if (progress.completed && !progress.error) {
+                    setTimeout(() => {
+                        setSimulating(false);
+                        setSimProgress(null);
+                        // Refresh alerts
+                        setSeverityFilter(prev => prev); // Trigger fetch
+                        window.location.reload();
+                    }, 2000);
+                }
+            });
+        } catch (e) {
+            setSimulating(false);
+        }
+    };
 
     useEffect(() => {
         if (!authLoading && !user) {
@@ -85,21 +111,49 @@ export default function AlertsPage() {
                         <p className="text-neutral-500 mt-2">Monitor and manage your pet alerts</p>
                     </div>
 
-                    {/* Severity Filter */}
-                    <select
-                        value={severityFilter}
-                        onChange={(e) => {
-                            setSeverityFilter(e.target.value);
-                            setCurrentPage(1);
-                        }}
-                        className="rounded-lg border border-neutral-200 bg-white px-4 py-2 text-neutral-900 focus:border-primary focus:outline-none shadow-sm"
-                    >
-                        <option value="">All Severities</option>
-                        <option value="critical">Critical</option>
-                        <option value="high">High</option>
-                        <option value="medium">Medium</option>
-                        <option value="low">Low</option>
-                    </select>
+                    <div className="flex gap-4">
+                        <button
+                            onClick={handleSimulation}
+                            disabled={simulating}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-wider transition-all ${simulating
+                                ? "bg-neutral-100 text-neutral-400 cursor-not-allowed"
+                                : "bg-neutral-900 text-white hover:bg-black shadow-lg shadow-neutral-200 active:scale-95"
+                                }`}
+                        >
+                            {simulating ? (
+                                <>
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                    {simProgress ? `Step ${simProgress.step}/${simProgress.totalSteps}` : 'Initializing...'}
+                                </>
+                            ) : (
+                                <>
+                                    <PlayCircle className="h-4 w-4" />
+                                    Simulate Protocol
+                                </>
+                            )}
+                        </button>
+                        {simulating && (
+                            <span className="text-xs text-red-500 font-medium animate-pulse self-center">
+                                Do not refresh page!
+                            </span>
+                        )}
+
+                        {/* Severity Filter */}
+                        <select
+                            value={severityFilter}
+                            onChange={(e) => {
+                                setSeverityFilter(e.target.value);
+                                setCurrentPage(1);
+                            }}
+                            className="rounded-lg border border-neutral-200 bg-white px-4 py-2 text-neutral-900 focus:border-primary focus:outline-none shadow-sm"
+                        >
+                            <option value="">All Severities</option>
+                            <option value="critical">Critical</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
                 </div>
 
                 {alerts.length === 0 ? (
